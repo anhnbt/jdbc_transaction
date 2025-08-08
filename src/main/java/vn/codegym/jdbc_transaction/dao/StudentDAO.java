@@ -31,4 +31,27 @@ public class StudentDAO {
         // logic call store procedure to get students
         return students;
     }
+
+    public Student getStudentById(int id) {
+        Student student = new Student();
+        // try-with-resources to manage connection and statement
+        try (Connection conn = DBConnection.getConnection();
+             CallableStatement cstmt = conn.prepareCall("{call getStudentById(?)}")) {
+            cstmt.setInt(1, id);
+            ResultSet rs = cstmt.executeQuery();
+            while (rs.next()) {
+                student.setId(rs.getInt("id"));
+                student.setName(rs.getString("name"));
+                student.setEmail(rs.getString("email"));
+            }
+        } catch (SQLException e) {
+            System.out.println("Co loi xay ra khi lay danh sach sinh vien");
+            e.printStackTrace();
+        }
+        // logic call store procedure to get students
+        return student;
+    }
+
+    // delete student by id
+    // update student by id
 }

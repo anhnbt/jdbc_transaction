@@ -4,6 +4,7 @@ public class Student {
     private int id;
     private String name;
     private String email;
+    // Properties: grade, address, phone, etc. can be added later
 
     public Student() {
     }

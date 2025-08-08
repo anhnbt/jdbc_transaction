@@ -30,8 +30,23 @@ public class StudentController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        RequestDispatcher dispatcher = req.getRequestDispatcher("students/list.jsp");
-        req.setAttribute("students", studentDAO.getStudents());
+        RequestDispatcher dispatcher;
+        String action = req.getParameter("action");
+        if (action == null) {
+            action = "list";
+        }
+
+        switch (action) {
+            case "detail":
+                int id = Integer.parseInt(req.getParameter("id"));
+                dispatcher = req.getRequestDispatcher("students/detail.jsp");
+                req.setAttribute("student", studentDAO.getStudentById(id));
+                break;
+            default:
+                dispatcher = req.getRequestDispatcher("students/list.jsp");
+                req.setAttribute("students", studentDAO.getStudents());
+
+        }
         dispatcher.forward(req, resp);
     }
 }
